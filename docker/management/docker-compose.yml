@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  portainer:
+    container_name: portainer
+    restart: always  
+    image: portainer/portainer:latest
+    volumes:
+      - ${USERDIR}/portainer:/data
+      - ${USERDIR}/shared:/shared
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9000:9000"
+    environment:
+      - TZ=${TZ}

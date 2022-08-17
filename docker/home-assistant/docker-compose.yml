@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  homeassistant:
+    container_name: prod-home-assistant
+    restart: always
+    image: homeassistant/home-assistant:latest
+
+    volumes:
+      - ${USERDIR}/home-assistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - ${USERDIR}/home-assistant/media:/media
+    privileged: true
+    ports:
+      - 8123:8123
+    environment:
+      - TZ=${TZ}
+    networks:
+      - ha-network  
+ 
+networks:
+  ha-network:
+    driver: bridge
