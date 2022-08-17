@@ -19,5 +19,5 @@ https://github.com/blaineventurine/home-automation-docker
 
 use docker-compose `docker-compose.yml` with `DEV` override
 ```cmd 
-docker-compose -f docker-compose.yml -f docker-compose.dev.override.yml up
+docker-compose -f docker-compose.yml -f docker-compose.dev.override.yml --env-file ./config/.env.dev up
 ```
