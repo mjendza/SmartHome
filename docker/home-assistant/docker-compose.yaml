@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.4'
 
 services:
   homeassistant:
@@ -14,10 +14,9 @@ services:
     ports:
       - 8123:8123
     environment:
-      - TZ=${TZ}
-    networks:
-      - ha-network  
+      - TZ=${TZ}  
  
 networks:
-  ha-network:
-    driver: bridge
+  default:
+    external:
+      name: iot-smart-network  

@@ -1,0 +1,16 @@
+version: "3.2"
+services:
+  rabbitmq:
+    #https://hub.docker.com/_/rabbitmq/ 
+    image: rabbitmq:3.10-management
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ${USERDIR}/rabbitmq/data/:/var/lib/rabbitmq/
+
+networks:
+  default:
+    external:
+      name: iot-smart-network
