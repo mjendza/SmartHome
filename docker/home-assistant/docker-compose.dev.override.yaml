@@ -4,4 +4,4 @@ services:
   homeassistant:
     container_name: dev-home-assistant
     ports:
-      - 58123:8123
+      - 8123:8123

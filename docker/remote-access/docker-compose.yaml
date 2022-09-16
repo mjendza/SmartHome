@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  cloudflared-tunnel:
+    container_name: cloudflared-tunnel
+    restart: always 
+    command: tunnel run 
+    image: cloudflare/cloudflared:latest
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+
+networks:
+  default:
+    external:
+      name: shared-smart-network      
