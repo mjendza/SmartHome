@@ -1,0 +1,98 @@
+@startuml SmartHome
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title
+Big Picture
+end title
+
+System_Boundary(Home, "Home") {
+
+    System_Boundary(ServerRoom, "Home") {
+        System_Boundary(PI, "RasberryPi") {
+                Container(SSD, "SSD USB disc", "", "")
+                System_Boundary(hass, "hass") {
+                      Container(HA, "HomeAssistant", "", "")
+                }
+            }
+            Container(PowerBackup, "UPS", "", "")
+
+            System_Boundary(network, "Network") {
+                  Container(gateway, "UDM Pro", "", "critical")
+                  Container(ac1, "UniFi6 Lite", "", "critical")
+                  Container(ac2, "UniFi6 Lite", "", "critical")
+            }
+
+            System_Boundary(server, "Server1") {
+                Container(OpenVPN, "VPN Server", "", "")
+                Container(Kodi, "Kodi Media", "", "")
+                Person(serverUser, serverUser, "Server User")
+                System_Boundary(containers, "Containers") {
+                      Container(PiHole, "PiHole", "PublicIP LAN", "DNS Server")
+                      Container(InfluxDB, "Influx DB", "", "")
+                      Container(Grafana, "Grafana", "", "")
+                      Container(MariaDB, "Maria DB", "", "backup")
+                      Container(DevHomeAssistance, "HomeAssistance", "dev", "")
+                      Container(HeatingHomeAssistance, "HomeAssistance", "Heating", "critical")
+                }
+            }
+    }
+
+
+    System_Boundary(IoT, "IoT") {
+        System_Boundary(Shelly, "shelly") {
+                 Container(LivingRoomWindow1, "Window1", "Shelly ", "DOOR AND WINDOW 2")
+
+                         Container(KitchenFlood, "KitchenFlood", "Shelly ", "flood")
+                         Container(BathRoomLaundryFlood, "BathRoom Laundry Flood", "Shelly", "flood")
+
+                         Container(ServerPowerController, "Server Power Controller", "Shelly", "Plug S")
+                         Container(LivingRoomTvController, "Living Room TV Controller", "Shelly", "Plug S")
+
+                         Container(ShellyMotion, "Shelly Motion", "Shelly", "Shelly Motion")
+
+                         Container(PowerMeasurement, "Shelly 3EM", "Shelly", "3EM")
+
+
+                         Container(LivingroomLight, "Livingroom Light", "Shelly 1", "Light")
+                         Container(KitchenLight, "Kitchen Light", "Shelly 2.5", "Light")
+                         Container(OfficeLight, "Office Light", "Shelly Plus 2PM", "Light")
+            }
+
+
+        System_Boundary(Heating, "heating") {
+             Container(Zone1, "Zone1", "Shelly 1", "")
+             Container(Zone1Execution, "Zone1 EXE", "T30NC", "")
+             Container(Thermo1, "Thermostat1", "Shelly", "H&T")
+        }
+
+        System_Boundary(EspHome, "EspHome") {
+                Container(ServerTemp, "Server Temp HT", "ESP8266 DHT12", "Test")
+                Container(LivingRoomTempTest1, "LivingRoom Temp DS28", "ESP8266", "Test")
+                Container(ServerTempTest1, "Server Temp M5", "M5 ESP32", "Test")
+        }
+   }
+
+   System_Boundary(computers, "Computers") {
+            Container(laptop1, "Lenovo", "", "")
+            Container(phone1, "Pixel", "", "")
+            Container(phone2, "IPhone", "", "")
+   }
+   System_Boundary(other, "Devices") {
+         Container(NetworkPrinter, "Printer", "EPSON", "XP6100")
+         Container(irobot, "IRobot", "i7", "")
+
+         System_Boundary(Sonos, "Sonos") {
+                 Container(one1, "One", "Left", "")
+                 Container(one2, "One", "Right", "")
+            }
+
+            System_Boundary(Alexa, "Alexa Voice Controller") {
+                Container(echo1, "Echo 1", "", "")
+            }
+            System_Boundary(monitoring, "Monitoring") {
+                        Container(cam1, "CAMERA1", "Doors out", "")
+            }
+   }
+}
+
+@enduml
