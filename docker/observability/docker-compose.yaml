@@ -1,45 +1,89 @@
-version: '3'
-services:
-  influxdb:
-    container_name: influxdb
-    restart: unless-stopped
-    image: influxdb
-    volumes:
-      - ${USERDIR}/influxdb/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-      - ${USERDIR}/influxdb/db:/var/lib/influxdb
+version: '3.7'
 
-    environment:
-      - INFLUXDB_DB=${INFLUXDB_DB}
-      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
-      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}  
-    ports:
-      - "8086:8086"
-  grafana:
-    container_name: grafana
-    restart: unless-stopped
-    image: grafana/grafana
-    depends_on:
-      - influxdb
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-    volumes:
-      - ${USERDIR}/grafana:/var/lib/grafana
-    ports:
-      - "3000:3000"
-  chronograf:
-    image: chronograf:latest
-    ports:
-      - "8888:8888"
-    volumes:
-      - ${USERDIR}/chronograf:/var/lib/chronograf
-    depends_on:
-      - influxdb
-    environment:
-      - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
-      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
 networks:
   default:
     external:
       name: iot-smart-network
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.36.2
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - ${USERDIR}/prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - ${HOST_PORT_PREFIX}9090:9090
+    user: "0:0"      
+    links:
+      - cadvisor:cadvisor
+      - alertmanager:alertmanager
+    depends_on:
+      - cadvisor
+    restart: always
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /:/host:ro,rslave
+    user: "0:0"       
+    command: 
+      - '--path.rootfs=/host'
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - ${HOST_PORT_PREFIX}9100:9100
+    restart: always
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    ports:
+      - ${HOST_PORT_PREFIX}9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    restart: always
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+#    deploy:
+#      placement:
+#        constraints:
+#          - node.hostname == ${HOSTNAME}
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - ${HOST_PORT_PREFIX}8080:8080
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    user: "0:0"
+    depends_on:
+      - prometheus
+    ports:
+      - ${HOST_PORT_PREFIX}3000:3000
+    volumes:
+      - ${USERDIR}/grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    restart: always
