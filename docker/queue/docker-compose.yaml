@@ -3,13 +3,24 @@ services:
   rabbitmq:
     #https://hub.docker.com/_/rabbitmq/ 
     image: rabbitmq:3.10-management
-    container_name: 'rabbitmq'
+    container_name: 'rabbitmq'        
     ports:
-        - 5672:5672
-        - 15672:15672
+      - "1883:1883"
+      - "5672:5672"
+      - "15672:15672"
+      - "15675:15675"
+    command: "/bin/bash -c \"rabbitmq-plugins enable --offline rabbitmq_mqtt rabbitmq_web_mqtt rabbitmq_amqp1_0; rabbitmq-server\""
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER_NAME}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_USER_PASSWORD}
     volumes:
-        - ${USERDIR}/rabbitmq/data/:/var/lib/rabbitmq/
+      - ${USERDIR}/rabbitmq/data/:/var/lib/rabbitmq/
+      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
+      # - type: bind
+      #   source: ${USERDIR}/rabbitmq/config/advanced.config
+      #   target: /etc/rabbitmq/advanced.config
+      #   read_only: true
 networks:
   default:
     external:
