@@ -2,3 +2,4 @@
 docker/management/.env.dev
 
 docker/home-assistant/.env.dev
+*.dev
