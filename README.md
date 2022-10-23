@@ -20,6 +20,7 @@ A tutorial how to build smart home from scratch. Still PoC.
 - one shared network for all composes
 - most of the volumes are as local folders (TBD: need to check what about PROD env)
 - single environment file for all composes
+![Big Picture](doc/big-picture/SmartHome-Big_Picture.png)
 
 ### run
 to run solution use 
