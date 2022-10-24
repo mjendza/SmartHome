@@ -1,0 +1,19 @@
+version: '3'
+services:
+  # unifi:
+  #   container_name: unifi
+  #   restart: unless-stopped
+  #   image: linuxserver/unifi
+  #   volumes:
+  #     - /srv/docker/unifi:/config
+  #   environment:
+  #     - PGID=0
+  #     - PUID=0
+  #     - ES_JAVA_OPTS='-Xms2g -Xmx2g'
+  #   ports:
+  #     - "8080:8080"
+  #     - "8081:8081"
+  #     - "8443:8443"
+  #     - "8843:8843"
+  #     - "8880:8880"
+  #     - "3478:3478"

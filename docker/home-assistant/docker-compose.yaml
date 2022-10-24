@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.4'
 
 services:
   homeassistant:
@@ -7,17 +7,16 @@ services:
     image: homeassistant/home-assistant:latest
 
     volumes:
-      - ${USERDIR}/home-assistant:/config
+      - ../../home-assistant-config:/config
       - /etc/localtime:/etc/localtime:ro
       - ${USERDIR}/home-assistant/media:/media
     privileged: true
     ports:
       - 8123:8123
     environment:
-      - TZ=${TZ}
-    networks:
-      - ha-network  
+      - TZ=${TZ}  
  
 networks:
-  ha-network:
-    driver: bridge
+  default:
+    external:
+      name: iot-smart-network  

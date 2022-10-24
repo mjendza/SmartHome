@@ -13,3 +13,7 @@ services:
       - "9000:9000"
     environment:
       - TZ=${TZ}
+networks:
+  default:
+    external:
+      name: shared-smart-network
