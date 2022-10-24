@@ -5,3 +5,6 @@ docker/home-assistant/.env.dev
 *.dev
 home-assistant-configuration/
 home-assistant-config/
+*.dev
+
+.idea/workspace.xml
