@@ -18,15 +18,17 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
+      - name: 🚀 Run yamllint
+        uses: frenck/action-yamllint@v1
       #- name: Copy .env
       #  run: cp .env.dist .env
       - name: Build QUEUE docker-compose stack
-        run: docker-compose up docker/queue/docker-compose.yaml --env-file docker/.env
+        run: docker-compose up ./docker/queue/docker-compose.yaml --env-file docker/.env
       - name: Build MANAGEMENT docker-compose stack
-        run: docker-compose up docker/management/docker-compose.yaml --env-file docker/.env
+        run: docker-compose up ./docker/management/docker-compose.yaml --env-file docker/.env
       - name: Build OBSERVABILITY docker-compose stack
-        run: docker-compose up docker/observability/docker-compose.yaml --env-file docker/.env
+        run: docker-compose up ./docker/observability/docker-compose.yaml --env-file docker/.env
       - name: Build HA docker-compose stack
-        run: docker-compose up docker/home-assistant/docker-compose.yaml  --env-file docker/.env
+        run: docker-compose up ./docker/home-assistant/docker-compose.yaml  --env-file docker/.env
       - name: Check running containers
         run: docker ps -a
