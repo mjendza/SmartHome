@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['18.0.0']
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      #- name: Copy .env
+      #  run: cp .env.dist .env
+      - name: Build QUEUE docker-compose stack
+        run: docker-compose docker/queue/docker-compose.yaml
+      - name: Build MANAGEMENT docker-compose stack
+        run: docker-compose docker/management/docker-compose.yaml
+      - name: Build OBSERVABILITY docker-compose stack
+        run: docker-compose docker/observability/docker-compose.yaml
+      - name: Build HA docker-compose stack
+        run: docker-compose docker/home-assistant/docker-compose.yaml
+      - name: Check running containers
+        run: docker ps -a
