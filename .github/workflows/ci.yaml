@@ -18,8 +18,8 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
-      - name: 🚀 Run yamllint
-        uses: frenck/action-yamllint@v1
+      #- name: 🚀 Run yamllint
+      #  uses: frenck/action-yamllint@v1
       #- name: Copy .env
       #  run: cp .env.dist .env
       - name: Build QUEUE docker-compose stack
