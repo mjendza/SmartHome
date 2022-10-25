@@ -23,7 +23,7 @@ jobs:
       #- name: Copy .env
       #  run: cp .env.dist .env
       - name: Build SHARED docker-compose stack
-        run: docker network create shared-smart-network
+        run: docker network create iot-smart-network
       - name: Build QUEUE docker-compose stack
         working-directory: ./docker/queue/
         run: docker-compose up docker-compose.yaml --env-file ../docker/.env
