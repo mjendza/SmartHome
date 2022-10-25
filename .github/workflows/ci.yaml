@@ -25,5 +25,5 @@ jobs:
 
       - name: Build QUEUE docker-compose stack
         working-directory: docker
-        run: run.sh
+        run: ./run.sh
         shell: bash
