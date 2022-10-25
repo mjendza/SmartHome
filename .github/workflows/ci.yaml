@@ -24,5 +24,6 @@ jobs:
       #  run: cp .env.dist .env
 
       - name: Build QUEUE docker-compose stack
-        run: docker/run.sh
+        working-directory: docker
+        run: run.sh
         shell: bash
