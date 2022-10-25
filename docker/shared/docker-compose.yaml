@@ -1,4 +1,5 @@
 version: '3.7'
 
 networks:
-  name: shared-smart-network
+  shared-smart-network:
+    name: shared-smart-network
