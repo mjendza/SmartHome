@@ -3,11 +3,11 @@
 A tutorial how to build smart home from scratch. Still PoC. 
 ## Decisions log
 
-| Decision    | Rationale                                                                                 | Status   |
-|-------------|-------------------------------------------------------------------------------------------|----------|
-| big-picture | Want to track vision of the system with big picture.                                      | TBD      |
-| hosting/deployment | Want to host applications with docker - defined with docker compose. | WIP(PR3) |
-
+| Decision           | Rationale                                                                          | Status                                             |
+|--------------------|------------------------------------------------------------------------------------|----------------------------------------------------|
+| big-picture        | Want to track vision of the system with big picture.                               | TBD                                                |
+| hosting/deployment | Want to host applications with docker - defined with docker compose.               | (PR3)[https://github.com/mjendza/SmartHome/pull/3] |
+| development        | Verify development first. Need to use github actions to check it can use solution. | (PR4)[https://github.com/mjendza/SmartHome/pull/4] |
 
 # requirements
 - SSH development with VS Code
@@ -40,7 +40,7 @@ docker-compose -f queue/docker-compose.yaml --env-file .env.dev up -d --force-re
 ##### home-assistant
 use docker-compose `docker-compose.yml` with `DEV` override
 ```cmd 
-docker-compose -f docker-compose.yml -f docker-compose.dev.override.yml --env-file .env.dev up
+docker-compose -f home-assistant/docker-compose.yaml -f home-assistant/docker-compose.dev.override.yaml --env-file .env.dev up
 ```
 ##### queue
 ```cmd
