@@ -34,6 +34,7 @@ jobs:
         working-directory: ./docker/observability/
         run: docker-compose up --env-file ../docker/.env
       - name: prepare to run HA
+        working-directory: .
         run: ha-run.sh
       - name: Build HA docker-compose stack
         working-directory: ./docker/home-assistant/
