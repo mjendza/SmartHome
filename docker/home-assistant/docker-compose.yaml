@@ -7,7 +7,7 @@ services:
     image: homeassistant/home-assistant:latest
 
     volumes:
-      - ../../home-assistant-config:/config
+      - ${USERDIR}/ha/config:/config
       - /etc/localtime:/etc/localtime:ro
       - ${USERDIR}/home-assistant/media:/media
     privileged: true
