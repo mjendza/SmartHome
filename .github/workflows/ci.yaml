@@ -22,8 +22,8 @@ jobs:
       #  uses: frenck/action-yamllint@v1
       #- name: Copy .env
       #  run: cp .env.dist .env
-
+      - name: Build SHARED docker-compose stack
+        run: docker network create iot-smart-network
       - name: Build QUEUE docker-compose stack
-        working-directory: docker
-        run: ./run.sh
-        shell: bash
+        working-directory: ./docker/queue
+        run: docker-compose up --env-file ../docker/.env
