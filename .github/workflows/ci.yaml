@@ -33,13 +33,8 @@ jobs:
       - name: Build OBSERVABILITY docker-compose stack
         working-directory: ./docker/observability/
         run: docker-compose up --env-file ../docker/.env
-      - name: make dest folder
-        run: mkdir -p ./dest/ha
-      #- name: make ha folder
-      #  working-directory: dest
-      #  run: mkdir -p ./ha
-      - name: Copy docker-compose.yaml
-        run: cp -r ./home-assistant-configuration ./dest/ha/config
+      - name: prepare to run HA
+        run: ha-run.sh
       - name: Build HA docker-compose stack
         working-directory: ./docker/home-assistant/
         run: docker-compose up  --env-file docker/.env
