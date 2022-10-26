@@ -1,2 +1,2 @@
-mkdir -p ./dest/ha
-cp -r ./home-assistant-configuration ./dest/ha/config
+mkdir -p ./dist/ha
+cp -r ./home-assistant-configuration ./dist/ha/config
