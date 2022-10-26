@@ -3,8 +3,7 @@ docker/management/.env.dev
 
 docker/home-assistant/.env.dev
 *.dev
-home-assistant-configuration/
-home-assistant-config/
+dist/
 *.dev
 
 .idea/workspace.xml
