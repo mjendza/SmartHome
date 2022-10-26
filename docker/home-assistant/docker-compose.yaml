@@ -4,7 +4,7 @@ services:
   homeassistant:
     container_name: home-assistant
     restart: always
-    image: homeassistant/home-assistant:latest
+    image: homeassistant/home-assistant:2022.10.5
 
     volumes:
       - ${USERDIR}/ha/config:/config
