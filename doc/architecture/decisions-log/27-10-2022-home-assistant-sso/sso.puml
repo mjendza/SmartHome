@@ -1,0 +1,25 @@
+@startuml SmartHome
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title
+Single Sign On
+end title
+
+System_Boundary(Azure, "Cloud") {
+    Container(AzureAD, "Azure AD", "", "")
+}
+System_Boundary(Home, "Home") {
+
+
+    Container(hareverseproxy, "reverse-proxy", "", "")
+    Container(ngx, "ngx", "", "")
+    System_Boundary(HA, "HomeAssistant") {
+
+                    System_Boundary(ha-integrations, "integrations") {
+                          Container(sso, "sso", "", "")
+                    }
+    }
+
+}
+
+@enduml
