@@ -14,9 +14,59 @@ services:
     ports:
       - 8123:8123
     environment:
-      - TZ=${TZ}  
- 
+      - TZ=${TZ}
+
+  auth-proxy:
+    # can base on https://github.com/grafana/grafana/issues/52681
+    # https://developer.okta.com/blog/2022/07/14/add-auth-to-any-app-with-oauth2-proxy
+    #config link https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+    container_name: auth-proxy-for-ha
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    restart: always
+    ports:
+      - 4180:4180
+    volumes:
+      - $PWD/data/oauth2:/var/lib/oauth2_proxy
+    environment:
+      # DOC https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider/#azure-auth-provider
+      - OAUTH2_PROXY_PROVIDER=azure
+      - OAUTH2_PROXY_CLIENT_ID=${AZURE_AD_HA_APP}
+      - OAUTH2_PROXY_CLIENT_SECRET=${AZURE_AD_HA_SECRET}
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=${AZURE_AD_DISCOVERY}
+      #- OAUTH2_PROXY_RESOURCE=/.default
+      - OAUTH2_PROXY_COOKIE_SECRET=1234567890123456
+      - OAUTH2_PROXY_COOKIE_DOMAIN=https://localhost
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+      - OAUTH2_PROXY_COOKIE_SECURE=false
+      - OAUTH2_PROXY_UPSTREAMS=https://localhost
+      - OAUTH2_PROXY_HTTP_ADDRESS=http://:4180
+      - OAUTH2_PROXY_REDIRECT_URL=http://localhost:4180/oauth2/callback
+      - OAUTH2_PROXY_SET_XAUTHREQUEST=true
+
+      - OAUTH2_PROXY_ERRORS_TO_INFO_LOG=true
+      - OAUTH2_PROXY_AUTH_LOGGING=true
+      - OAUTH2_PROXY_SHOW_DEBUG_ON_ERROR=true
+      - OAUTH2_PROXY_SET_AUTHORIZATION_HEADER=true
+      - OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER=true
+      - OAUTH2_PROXY_PASS_USER_HEADERS=true
+      - OAUTH2_PROXY_PASS_HOST_HEADER=true
+      - OAUTH2_PROXY_REVERSE_PROXY=true
+
+      - OAUTH2_PROXY_PREFER_EMAIL_TO_USER=false
+
+      - OAUTH2_PROXY_SSL_UPSTREAM_INSECURE_SKIP_VERIFY=true
+      - OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY=true
+  # nginx:
+  #   container_name: nginx
+  #   image: nginx
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #   volumes:
+  #     - $PWD/data/nginx/:/etc/nginx/conf.d/
+
+
 networks:
   default:
     external:
-      name: iot-smart-network  
+      name: iot-smart-network
