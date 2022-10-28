@@ -7,6 +7,17 @@ logger:
   logs:
     homeassistant.components.influxdb: warning
     homeassistant.components.mqtt: debug
+    custom_components.auth_header: debug
+    
+http:
+    use_x_forwarded_for: true
+    trusted_proxies:
+        - 1.2.3.4/32 # This needs to be set to the IP of your reverse proxy
+auth_header:
+    # Optionally set this if you're not using authentik proxy or oauth2_proxy
+    # username_header: X-Forwarded-Preferred-Username
+    # Optionally enable debug mode to see the headers Home-Assistant gets
+    # debug: false
 
 # Example configuration.yaml entry
 switch:
@@ -22,3 +33,4 @@ switch:
           service: switch.turn_off
           target:
             entity_id: switch.skylight_close   
+
