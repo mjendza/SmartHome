@@ -20,13 +20,15 @@ services:
     # can base on https://github.com/grafana/grafana/issues/52681
     # https://developer.okta.com/blog/2022/07/14/add-auth-to-any-app-with-oauth2-proxy
     #config link https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
-    container_name: auth-proxy-for-ha
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: auth-proxy
     restart: always
+    depends_on:
+      - proxy-server
     ports:
       - 4180:4180
     volumes:
-      - $PWD/data/oauth2:/var/lib/oauth2_proxy
+      - ${USERDIR}/oauth2:/var/lib/oauth2_proxy
     environment:
       # DOC https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider/#azure-auth-provider
       - OAUTH2_PROXY_SHOW_DEBUG_ON_ERROR=true
@@ -34,16 +36,16 @@ services:
       - OAUTH2_PROXY_CLIENT_ID=${AZURE_AD_HA_APP}
       - OAUTH2_PROXY_CLIENT_SECRET=${AZURE_AD_HA_SECRET}
       - OAUTH2_PROXY_OIDC_ISSUER_URL=${AZURE_AD_DISCOVERY}
-      - OAUTH2_PROXY_SCOPE=openid
+      - OAUTH2_PROXY_SCOPE=openid email offline_access
       - OAUTH2_PROXY_OIDC_EMAIL_CLAIM=sub
       #- OAUTH2_PROXY_RESOURCE=/.default
       - OAUTH2_PROXY_COOKIE_SECRET=1234567890123456
-      - OAUTH2_PROXY_COOKIE_DOMAIN=https://localhost
       - OAUTH2_PROXY_EMAIL_DOMAINS=*
       - OAUTH2_PROXY_COOKIE_SECURE=false
       - OAUTH2_PROXY_UPSTREAMS=${HA_URL}
+      - OAUTH2_PROXY_COOKIE_DOMAIN=${DOMAIN}
       - OAUTH2_PROXY_HTTP_ADDRESS=http://:4180
-      - OAUTH2_PROXY_REDIRECT_URL=http://localhost:4180/oauth2/callback
+      - OAUTH2_PROXY_REDIRECT_URL=https://20.4.228.177/oauth2/callback
       - OAUTH2_PROXY_SET_XAUTHREQUEST=true
 
 
@@ -61,14 +63,26 @@ services:
       - OAUTH2_PROXY_AUTH_LOGGING=true
       - OAUTH2_PROXY_REQUEST_LOGGING=true
       - OAUTH2_PROXY_ERRORS_TO_INFO_LOG=true
-  # nginx:
-  #   container_name: nginx
-  #   image: nginx
-  #   restart: always
-  #   ports:
-  #     - 80:80
+      # - OAUTH2_PROXY_tls_cert_file=cert.pem
+      # - OAUTH2_PROXY_tls_key_file=cert.key
+      
+  proxy-server:
+    image: nginx:latest
+    container_name: proxy-server
+    ports:
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx-config/cert.pem:/etc/nginx/ssl/cert.pem:ro
+      - ./nginx-config/key.pem:/etc/nginx/ssl/key.pem:ro
+      - ./nginx-config/passw.secret:/etc/nginx/ssl/passw:ro      
+      - ./nginx-config/nginx.conf:/etc/nginx/nginx.conf:ro
+
+  # certbot:
+  #   image: certbot/certbot:latest
   #   volumes:
-  #     - $PWD/data/nginx/:/etc/nginx/conf.d/
+  #     - ${USERDIR}/certbot/www/:/var/www/certbot/:rw
+  #     - ${USERDIR}/certbot/conf/:/etc/letsencrypt/:rw
 
 
 networks:
