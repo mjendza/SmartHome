@@ -15,7 +15,7 @@ http:
         - 172.23.0.9/32 # This needs to be set to the IP of your reverse proxy
 auth_header:
     # Optionally set this if you're not using authentik proxy or oauth2_proxy
-    # username_header: X-Forwarded-Preferred-Username
+    username_header: X-Forwarded-Email
     # Optionally enable debug mode to see the headers Home-Assistant gets
     # debug: false
 
