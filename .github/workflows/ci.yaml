@@ -35,7 +35,7 @@ jobs:
         run: docker-compose up --env-file ../docker/.env
       - name: prepare to run HA
         working-directory: .
-        run: ha-run.sh
+        run: . ha-run.sh
       - name: Build HA docker-compose stack
         working-directory: ./docker/home-assistant/
         run: docker-compose up  --env-file docker/.env
