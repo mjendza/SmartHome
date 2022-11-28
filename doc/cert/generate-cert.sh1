@@ -1,1 +1,1 @@
-openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 2000 -subj '/CN=my-home'
+openssl req -x509 -newkey rsa:4096 -keyout key.pem.secret -out cert.pem.secret -trustout cert-trust.pem.secret -sha256 -days 2000 -subj '/CN=my-home'

@@ -38,7 +38,7 @@ services:
       - OAUTH2_PROXY_CLIENT_SECRET=${FB_HA_SECRET}
       - OAUTH2_PROXY_SCOPE=openid email public_profile
 
-      - OAUTH2_PROXY_UPSTREAMS=http://0.0.0.0/ha
+      - OAUTH2_PROXY_UPSTREAMS=${HA_URL}
 
       - OAUTH2_PROXY_REVERSE_PROXY=true
 
@@ -58,17 +58,17 @@ services:
       - OAUTH2_PROXY_ERRORS_TO_INFO_LOG=true
       
   proxy-server:
-    image: nginx:latest
+    image: nginx:1.19
     container_name: proxy-server
     ports:
       - 443:443
     restart: always
     volumes:
-      - ./nginx-config/cert.pem:/etc/nginx/ssl/cert.pem:ro
-      - ./nginx-config/key.pem:/etc/nginx/ssl/key.pem:ro
-      - ./nginx-config/passw.secret:/etc/nginx/ssl/passw:ro      
-      - ./nginx-config/nginx.conf:/etc/nginx/nginx.conf:ro
-
+      - ./nginx-config/templates:/etc/nginx/templates
+      - ./nginx-config/cert.pem.secret:/etc/nginx/ssl/cert.pem:ro
+      - ./nginx-config/key.pem.secret:/etc/nginx/ssl/key.pem:ro
+      - ./nginx-config/passw.secret:/etc/nginx/ssl/passw:ro
+      - ./nginx-config/nginx.conf:/etc/nginx/conf.d/default.conf
   # certbot:
   #   image: certbot/certbot:latest
   #   volumes:

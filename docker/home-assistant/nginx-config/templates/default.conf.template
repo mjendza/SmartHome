@@ -1,0 +1,4 @@
+server { 
+  server_name  ${SERVER_NAME_OAUTH_PROXY};
+  
+}
