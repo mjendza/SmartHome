@@ -35,3 +35,6 @@ switch:
           service: switch.turn_off
           target:
             entity_id: switch.skylight_close   
+
+prometheus:
+  namespace: hass
