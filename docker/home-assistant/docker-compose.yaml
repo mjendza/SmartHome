@@ -4,7 +4,7 @@ services:
   homeassistant:
     container_name: home-assistant
     restart: always
-    image: homeassistant/home-assistant:latest
+    image: homeassistant/home-assistant:2022.10.5
 
     volumes:
       - ${USERDIR}/ha/config:/config
@@ -14,9 +14,69 @@ services:
     ports:
       - 8123:8123
     environment:
-      - TZ=${TZ}  
- 
+      - TZ=${TZ}
+
+  auth-proxy:
+    # can base on https://github.com/grafana/grafana/issues/52681
+    # https://developer.okta.com/blog/2022/07/14/add-auth-to-any-app-with-oauth2-proxy
+    #config link https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: auth-proxy
+    restart: always
+    depends_on:
+      - proxy-server
+    ports:
+      - 4180:4180
+    volumes:
+      - ${USERDIR}/oauth2:/var/lib/oauth2_proxy
+    environment:
+      # DOC https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider/#azure-auth-provider
+      - OAUTH2_PROXY_SHOW_DEBUG_ON_ERROR=true
+
+      - OAUTH2_PROXY_PROVIDER=facebook
+      - OAUTH2_PROXY_CLIENT_ID=${FB_HA_APP}
+      - OAUTH2_PROXY_CLIENT_SECRET=${FB_HA_SECRET}
+      - OAUTH2_PROXY_SCOPE=openid email public_profile
+
+      - OAUTH2_PROXY_UPSTREAMS=${HA_URL}
+
+      - OAUTH2_PROXY_REVERSE_PROXY=true
+
+      - OAUTH2_PROXY_COOKIE_SECRET=${COOKIE_SECRET}
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+      - OAUTH2_PROXY_COOKIE_SECURE=false
+      
+      - OAUTH2_PROXY_HTTP_ADDRESS=http://:4180
+      - OAUTH2_PROXY_REDIRECT_URL=${REDIRECT_URL}
+      - OAUTH2_PROXY_cookie_domains=${COOKIE_DOMAIN}
+      - OAUTH2_PROXY_whitelist_domains=${COOKIE_DOMAIN}
+      - OAUTH2_PROXY_SSL_UPSTREAM_INSECURE_SKIP_VERIFY=true
+      - OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY=true
+      - OAUTH2_PROXY_STANDARD_LOGGING=true
+      - OAUTH2_PROXY_AUTH_LOGGING=true
+      - OAUTH2_PROXY_REQUEST_LOGGING=true
+      - OAUTH2_PROXY_ERRORS_TO_INFO_LOG=true
+      
+  proxy-server:
+    image: nginx:1.19
+    container_name: proxy-server
+    ports:
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx-config/templates:/etc/nginx/templates
+      - ./nginx-config/cert.pem.secret:/etc/nginx/ssl/cert.pem:ro
+      - ./nginx-config/key.pem.secret:/etc/nginx/ssl/key.pem:ro
+      - ./nginx-config/passw.secret:/etc/nginx/ssl/passw:ro
+      - ./nginx-config/nginx.conf:/etc/nginx/conf.d/default.conf
+  # certbot:
+  #   image: certbot/certbot:latest
+  #   volumes:
+  #     - ${USERDIR}/certbot/www/:/var/www/certbot/:rw
+  #     - ${USERDIR}/certbot/conf/:/etc/letsencrypt/:rw
+
+
 networks:
   default:
     external:
-      name: iot-smart-network  
+      name: iot-smart-network

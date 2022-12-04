@@ -1,12 +1,25 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
-
+my:
 
 logger:
   default: info
   logs:
     homeassistant.components.influxdb: warning
     homeassistant.components.mqtt: debug
+    custom_components.auth_header: debug
+    
+http:
+    ip_ban_enabled: true
+    use_x_forwarded_for: true
+    trusted_proxies:
+    - 172.23.0.7
+    - 172.23.0.9
+auth_header:
+    # Optionally set this if you're not using authentik proxy or oauth2_proxy
+    username_header: X-Forwarded-Email
+    # Optionally enable debug mode to see the headers Home-Assistant gets
+    debug: true
 
 # Example configuration.yaml entry
 switch:
