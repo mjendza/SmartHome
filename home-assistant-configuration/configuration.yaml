@@ -36,3 +36,5 @@ switch:
           target:
             entity_id: switch.skylight_close   
 
+prometheus:
+  namespace: hass
