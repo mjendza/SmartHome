@@ -55,7 +55,7 @@ scrape_configs:
     scrape_interval: 15s
     metrics_path: /api/prometheus
     # Long-Lived Access Token
-    bearer_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2ODZjNDVmMDM5OWY0YWYxYWE3OTYxOGYwYmExMjNmYiIsImlhdCI6MTY3MTMwNjA2NywiZXhwIjoxOTg2NjY2MDY3fQ.PXEGO2d2len-W0dljPMHhPS1Y3k4E0sPvK9xV1Ikhl0'
+    bearer_token: 'REPLACE_ME'
     scheme: http
     static_configs:
       - targets: ['dev-home-assistant:8123']
