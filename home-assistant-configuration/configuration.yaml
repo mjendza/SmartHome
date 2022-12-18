@@ -14,6 +14,7 @@ http:
     use_x_forwarded_for: true
     trusted_proxies:
     - 172.23.0.7
+    - 172.23.0.8
     - 172.23.0.9
 auth_header:
     # Optionally set this if you're not using authentik proxy or oauth2_proxy
