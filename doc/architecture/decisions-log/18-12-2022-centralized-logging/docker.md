@@ -1,7 +1,6 @@
 ## requirements
 - push all logs to the one place to improve observability for the solution 
 
-
 ### docker
 Push logs via loki driver inside docker-compose
 ```
