@@ -1,8 +1,9 @@
 version: '3.4'
-x-logging: &logging
+x-logging: &loki-logging
   driver: loki
   options: # note: the ip is the ip we will assign later to loki in this file
     loki-url: "http://localhost:3100/loki/api/v1/push"
+
 
 networks:
   default:
@@ -32,6 +33,7 @@ services:
       - cadvisor
       - loki
     restart: always
+    logging: *loki-logging
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
     container_name: ${ENV_NAME_PREFIX}-node-exporter
@@ -91,7 +93,7 @@ services:
     env_file:
       - ./grafana/config.monitoring
     restart: always
-
+    logging: *loki-logging
   loki:
     container_name: ${ENV_NAME_PREFIX}-loki
     image: grafana/loki:2.3.0
