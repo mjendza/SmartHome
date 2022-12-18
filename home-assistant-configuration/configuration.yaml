@@ -14,9 +14,7 @@ http:
     ip_ban_enabled: true
     login_attempts_threshold: 100
     trusted_proxies:
-    - 172.23.0.7
-    - 172.23.0.8
-    - 172.23.0.9
+    - 172.23.0.0/24
 auth_header:
     # Optionally set this if you're not using authentik proxy or oauth2_proxy
     username_header: X-Forwarded-Email
