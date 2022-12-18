@@ -1,4 +1,8 @@
 version: '3.4'
+x-logging: &logging
+  driver: loki
+  options: # note: the ip is the ip we will assign later to loki in this file
+    loki-url: "http://localhost:3100/loki/api/v1/push"
 
 services:
   homeassistant:
@@ -74,6 +78,7 @@ services:
   #   volumes:
   #     - ${USERDIR}/certbot/www/:/var/www/certbot/:rw
   #     - ${USERDIR}/certbot/conf/:/etc/letsencrypt/:rw
+
 
 
 networks:

@@ -1,6 +1,15 @@
 version: '3.7'
 
+# networks:
+#   test-smart-network:
+#     #name: dev-smart-network
+#     name: test-smart-network
+#     external: true
+#     ipam:
+#       config: # here, we define our ip space
+#       - subnet: 172.55.0.0/16
+
 networks:
-  shared-smart-network:
-    name: shared-smart-network
-    external: true
+  default:
+    external:
+      name: iot-smart-network

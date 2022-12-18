@@ -1,4 +1,4 @@
-docker-compose stop
+#docker-compose stop
 
 mkdir -p ../../dist
 mkdir -p ../../dist/ha

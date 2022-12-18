@@ -6,12 +6,13 @@ logger:
   default: info
   logs:
     homeassistant.components.influxdb: warning
-    homeassistant.components.mqtt: debug
-    custom_components.auth_header: debug
+    homeassistant.components.mqtt: info
+    custom_components.auth_header: info
     
 http:
-    ip_ban_enabled: true
     use_x_forwarded_for: true
+    ip_ban_enabled: true
+    login_attempts_threshold: 100
     trusted_proxies:
     - 172.23.0.7
     - 172.23.0.8

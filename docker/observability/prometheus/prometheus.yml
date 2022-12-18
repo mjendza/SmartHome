@@ -21,7 +21,7 @@ alerting:
   - scheme: http
     static_configs:
     - targets:
-      - "alertmanager:9093"
+      - "dev-alertmanager:9093"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
@@ -43,15 +43,22 @@ scrape_configs:
     scrape_interval: 15s
 
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['dev-cadvisor:8080']
 
   - job_name: 'node-exporter'
-
     # Override the global default and scrape targets from this job every 5 seconds.
     scrape_interval: 15s
-  
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ['dev-node-exporter:9100']
+  # home assistant 
+  - job_name: "hass"
+    scrape_interval: 15s
+    metrics_path: /api/prometheus
+    # Long-Lived Access Token
+    bearer_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI2ODZjNDVmMDM5OWY0YWYxYWE3OTYxOGYwYmExMjNmYiIsImlhdCI6MTY3MTMwNjA2NywiZXhwIjoxOTg2NjY2MDY3fQ.PXEGO2d2len-W0dljPMHhPS1Y3k4E0sPvK9xV1Ikhl0'
+    scheme: http
+    static_configs:
+      - targets: ['dev-home-assistant:8123']
 
 #  - job_name: 'pushgateway'
 #    scrape_interval: 10s
