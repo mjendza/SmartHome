@@ -1,0 +1,1 @@
+docker-compose -f docker-compose.yaml  --env-file .env.dev up --detach --force-recreate
