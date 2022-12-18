@@ -5,9 +5,11 @@ A tutorial how to build smart home from scratch. Still PoC.
 
 | Decision           | Rationale                                                                          | Status                                             |
 |--------------------|------------------------------------------------------------------------------------|----------------------------------------------------|
-| big-picture        | Want to track vision of the system with big picture.                               | TBD                                                |
-| hosting/deployment | Want to host applications with docker - defined with docker compose.               | (PR3)[https://github.com/mjendza/SmartHome/pull/3] |
-| development        | Verify development first. Need to use github actions to check it can use solution. | (PR4)[https://github.com/mjendza/SmartHome/pull/4] |
+| big-picture                   | Want to track vision of the system with big picture.                               | TBD                                                |
+| hosting/deployment            | Want to host applications with docker - defined with docker compose.               | (PR3)[https://github.com/mjendza/SmartHome/pull/3] |
+| development                   | Verify development first. Need to use github actions to check it can use solution. | (PR4)[https://github.com/mjendza/SmartHome/pull/4] |
+| SingleSingOn - homeassistant  | enable SingleSingOn for HomeAssistant | (PR7)[https://github.com/mjendza/SmartHome/pull/7] |
+| observability - logs          | Push all logs to the one place to improve observability for the solution. | (PR8)[https://github.com/mjendza/SmartHome/pull/8] |
 
 # requirements
 - SSH development with VS Code

@@ -1,0 +1,1 @@
+docker-compose -p "test-observability" -f docker-compose.yaml  --env-file .env.test.dev up --detach --force-recreate

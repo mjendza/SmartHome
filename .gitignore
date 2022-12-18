@@ -1,9 +1,5 @@
-
-docker/management/.env.dev
-
-docker/home-assistant/.env.dev
-*.dev
 dist/
+dest/
 *.dev
 *.pem
 *.secret

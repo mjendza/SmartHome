@@ -1,4 +1,8 @@
 version: '3.7'
+x-logging: &loki-logging
+  driver: loki
+  options: # note: the ip is the ip we will assign later to loki in this file
+    loki-url: "http://localhost:3100/loki/api/v1/push"
 
 services:
   portainer:
@@ -13,6 +17,7 @@ services:
       - "9000:9000"
     environment:
       - TZ=${TZ}
+    logging: *loki-logging  
 networks:
   default:
     external:

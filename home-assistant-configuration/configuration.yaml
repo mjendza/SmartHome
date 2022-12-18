@@ -6,14 +6,16 @@ logger:
   default: info
   logs:
     homeassistant.components.influxdb: warning
-    homeassistant.components.mqtt: debug
-    custom_components.auth_header: debug
+    homeassistant.components.mqtt: info
+    custom_components.auth_header: info
     
 http:
-    ip_ban_enabled: true
     use_x_forwarded_for: true
+    ip_ban_enabled: true
+    login_attempts_threshold: 100
     trusted_proxies:
     - 172.23.0.7
+    - 172.23.0.8
     - 172.23.0.9
 auth_header:
     # Optionally set this if you're not using authentik proxy or oauth2_proxy
@@ -35,3 +37,7 @@ switch:
           service: switch.turn_off
           target:
             entity_id: switch.skylight_close   
+
+
+prometheus:
+  namespace: hass

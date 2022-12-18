@@ -18,7 +18,7 @@ datasources:
   # <int> org id. will default to orgId 1 if not specified
   orgId: 1
   # <string> url
-  url: http://prometheus:9090
+  url: http://dev-prometheus:9090
   # <string> database password, if used
   password:
   # <string> database user, if used
@@ -48,3 +48,8 @@ datasources:
   version: 1
   # <bool> allow users to edit datasources from the UI.
   editable: true
+
+- name: Loki
+  type: loki
+  url: http://dev-loki:3100
+  isDefault: false
