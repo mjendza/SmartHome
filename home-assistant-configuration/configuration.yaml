@@ -11,7 +11,7 @@ logger:
     
 http:
     use_x_forwarded_for: true
-    ip_ban_enabled: true
+    ip_ban_enabled: false
     login_attempts_threshold: 100
     trusted_proxies:
     - 172.23.0.0/24
@@ -30,12 +30,18 @@ switch:
         turn_on:
           service: switch.turn_on
           target:
-            entity_id: switch.skylight_open
+            entity_id: switch.virtual_alarm_enabled
         turn_off:
           service: switch.turn_off
           target:
-            entity_id: switch.skylight_close   
+            entity_id: switch.virtual_alarm_enabled
 
+input_boolean:
+  virtual_notify_home:
+    name: Notify when someone arrives home
+
+  virtual_alarm_enabled:
+    name: Enable/disable virtual alarm
 
 prometheus:
   namespace: hass
