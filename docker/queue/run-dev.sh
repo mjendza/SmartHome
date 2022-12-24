@@ -1,0 +1,1 @@
+docker-compose -p "dev-queue" -f docker-compose.yaml  --env-file .env.dev up --detach --force-recreate
