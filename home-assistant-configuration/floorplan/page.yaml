@@ -1,0 +1,43 @@
+
+title: Floorplan
+id: floorplan
+path: floorplan
+icon: mdi:floor-plan
+panel: true
+cards:
+  - type: custom:floorplan-card
+    config:
+      log_level: debug
+      image: '/local/floorplan/home.svg'
+      stylesheet: '/local/floorplan/home.css'
+      rules:
+      - entities: 
+        - sensor.demo_sensor
+        state_action:
+          - action: call-service
+            service: floorplan.text_set
+            service_data:
+              text: '${entity.state}'
+      - entities:
+          - switch.demo_switch
+          - switch.demo_light
+        tap_action:
+          action: call-service
+          service:  homeassistant.toggle
+      - entities:
+          - switch.demo_light
+        state_action:
+          - action: call-service
+            service: floorplan.style_set
+            element: ${entity.entity_id + '.background'}
+            style: |
+              >
+                
+                var opacity = 0.2;
+                console.log("element is OFF");
+                if (entity.state === 'on') {
+                  console.log("element is ON");
+                  opacity = 1;
+                }
+                var style = `stop-opacity: ${opacity};`;
+                return style;
