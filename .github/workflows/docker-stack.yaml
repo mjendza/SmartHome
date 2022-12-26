@@ -24,17 +24,15 @@ jobs:
       - name: Build QUEUE docker-compose stack
         working-directory: ./docker/queue
         run: sh run-ci.sh
-      # - name: Build MANAGEMENT docker-compose stack
-      #   working-directory: ./docker/management/
-      #   run: docker-compose up --env-file ../docker/.env
-      # - name: Build OBSERVABILITY docker-compose stack
-      #   working-directory: ./docker/observability/
-      #   run: docker-compose up --env-file ../docker/.env
-      # - name: prepare to run HA
-      #   working-directory: .
-      #   run: . ha-run.sh
-      # - name: Build HA docker-compose stack
-      #   working-directory: ./docker/home-assistant/
-      #   run: docker-compose up  --env-file docker/.env
+      - name: Build MANAGEMENT docker-compose stack
+        working-directory: ./docker/management/
+        run: sh run-ci.sh
+      - name: Build OBSERVABILITY docker-compose stack
+        working-directory: ./docker/observability/
+        run: sh run-ci.sh
+
+      - name: Build HA docker-compose stack
+        working-directory: ./docker/home-assistant/
+        run: sh run-ci.sh
       - name: Check running containers
         run: docker ps -a
