@@ -1,0 +1,1 @@
+docker-compose -p "ci-queue" -f docker-compose.yaml  --env-file .env up --detach

@@ -1,0 +1,1 @@
+docker-compose -p "ci-observability" -f docker-compose.yaml  --env-file .env up --detach --force-recreate
