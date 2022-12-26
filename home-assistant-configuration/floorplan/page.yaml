@@ -11,33 +11,43 @@ cards:
       image: '/local/floorplan/home.svg'
       stylesheet: '/local/floorplan/home.css'
       rules:
-      - entities: 
-        - sensor.demo_sensor
-        state_action:
-          - action: call-service
-            service: floorplan.text_set
-            service_data:
-              text: '${entity.state}'
+      # - entities: 
+      #   - sensor.demo_sensor
+      #   state_action:
+      #     - action: call-service
+      #       service: floorplan.text_set
+      #       service_data:
+      #         text: '${entity.state}'
       - entities:
-          - switch.demo_switch
-          - switch.demo_light
+          - input_boolean.demo_light
         tap_action:
           action: call-service
           service:  homeassistant.toggle
       - entities:
-          - switch.demo_light
+          - input_boolean.demo_light
         state_action:
           - action: call-service
             service: floorplan.style_set
-            element: ${entity.entity_id + '.background'}
-            style: |
+            element: '${entity.entity_id}.background'
+            service_data: |
               >
+                var elements = [
+                `${entity.entity_id}.background`,
+                ];
+              var opacity = 0.2;
+              console.log('entity');
+              console.log(entity);
+              if (entity.state === 'on') {
                 
-                var opacity = 0.2;
-                console.log("element is OFF");
-                if (entity.state === 'on') {
-                  console.log("element is ON");
                   opacity = 1;
-                }
-                var style = `stop-opacity: ${opacity};`;
-                return style;
+               
+              }
+              var style = `opacity: ${opacity};`;
+
+              var result =  {
+                elements: elements,
+                style: style,
+              };
+              console.log('result');
+              console.log(result);
+              return result;

@@ -45,6 +45,8 @@ input_boolean:
 
   virtual_alarm_enabled:
     name: Enable/disable virtual alarm
+  demo_light:
+    name: demo light
 
 prometheus:
   namespace: hass
