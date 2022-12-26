@@ -21,4 +21,4 @@ services:
 networks:
   default:
     external:
-      name: shared-smart-network
+      name: iot-smart-network

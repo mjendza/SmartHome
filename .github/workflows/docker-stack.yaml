@@ -1,0 +1,38 @@
+name: build dockers
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['18.0.0']
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Build SHARED docker-compose stack
+        run: docker network create iot-smart-network
+      - name: Build QUEUE docker-compose stack
+        working-directory: ./docker/queue
+        run: sh run-ci.sh
+      - name: Build MANAGEMENT docker-compose stack
+        working-directory: ./docker/management/
+        run: sh run-ci.sh
+      - name: Build OBSERVABILITY docker-compose stack
+        working-directory: ./docker/observability/
+        run: sh run-ci.sh
+
+      - name: Build HA docker-compose stack
+        working-directory: ./docker/home-assistant/
+        run: sh run-ci.sh
+      - name: Check running containers
+        run: docker ps -a
