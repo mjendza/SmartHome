@@ -20,11 +20,13 @@ cards:
       #         text: '${entity.state}'
       - entities:
           - input_boolean.demo_light
+          - input_boolean.demo_light_2
         tap_action:
           action: call-service
           service:  homeassistant.toggle
       - entities:
           - input_boolean.demo_light
+          - input_boolean.demo_light_2
         state_action:
           - action: call-service
             service: floorplan.style_set
@@ -35,19 +37,12 @@ cards:
                 `${entity.entity_id}.background`,
                 ];
               var opacity = 0.2;
-              console.log('entity');
-              console.log(entity);
               if (entity.state === 'on') {
-                
                   opacity = 1;
-               
               }
               var style = `opacity: ${opacity};`;
-
               var result =  {
                 elements: elements,
                 style: style,
               };
-              console.log('result');
-              console.log(result);
               return result;
