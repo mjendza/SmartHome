@@ -4,4 +4,10 @@
 ###
 ### GET ready
 ###
-GET {{host}}:3100/ready HTTP/1.1
+GET http://{{host}}:3100/ready HTTP/1.1
+
+
+###
+### GET labels
+###
+GET http://{{host}}:3100/loki/api/v1/labels HTTP/1.1
