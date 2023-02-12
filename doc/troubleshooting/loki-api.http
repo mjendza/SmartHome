@@ -1,0 +1,7 @@
+@host = 192.168.1.1
+
+
+###
+### GET ready
+###
+GET {{host}}:3100/ready HTTP/1.1
