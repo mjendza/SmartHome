@@ -20,7 +20,10 @@ auth_header:
     username_header: X-Forwarded-Email
     # Optionally enable debug mode to see the headers Home-Assistant gets
     debug: true
-    
+
+automation mine: !include_dir_list automation/
+
+
 lovelace:
   mode: yaml
   resources: !include lovelace/resources.yaml

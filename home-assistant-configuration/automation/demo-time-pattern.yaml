@@ -1,0 +1,17 @@
+#https://www.home-assistant.io/docs/automation
+
+id: efbb8954de8045ddaa0aa814bde515ae
+alias: run-nano
+trigger:
+  #https://www.home-assistant.io/docs/automation/trigger/#time-trigger
+  platform: time_pattern
+  seconds: 20
+action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.demo_light_2
+  - delay:
+      seconds: 3
+  - service: switch.turn_off
+    target:
+        entity_id: switch.demo_light_2
