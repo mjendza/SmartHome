@@ -1,7 +1,0 @@
-version: '3.4'
-
-services:
-  homeassistant:
-    container_name: dev-home-assistant
-    ports:
-      - 8123:8123
